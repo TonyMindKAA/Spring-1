@@ -7,14 +7,7 @@ import com.epam.cdp.anton.krynytskyi.domain.setter.id.SetterIdEventBean;
 import com.epam.cdp.anton.krynytskyi.domain.setter.id.SetterIdTicketBean;
 import com.epam.cdp.anton.krynytskyi.domain.setter.id.SetterIdUserBean;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class BookingStoreImpl implements BookingStore {
 
@@ -69,7 +62,7 @@ public class BookingStoreImpl implements BookingStore {
     }
 
     @Override
-    public List<Event> readAll(String partOfId) {
+    public List<Object> readAll(String partOfId) {
         return null;
     }
 

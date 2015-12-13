@@ -11,6 +11,10 @@ public class EventServiceStore implements EventService {
 
     private EventDAO eventDAO;
 
+    public void setEventDAO(EventDAO eventDAO) {
+        this.eventDAO = eventDAO;
+    }
+
     public List<Event> selectAll() {
         return eventDAO.selectAll();
     }

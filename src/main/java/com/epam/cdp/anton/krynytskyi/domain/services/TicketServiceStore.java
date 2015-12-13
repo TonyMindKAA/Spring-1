@@ -12,6 +12,10 @@ public class TicketServiceStore implements TicketService {
 
     private TicketDAO ticketDAO;
 
+    public void setTicketDAO(TicketDAO ticketDAO) {
+        this.ticketDAO = ticketDAO;
+    }
+
     public List<Ticket> selectAll() {
         return ticketDAO.selectAll();
     }

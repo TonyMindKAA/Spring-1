@@ -10,6 +10,10 @@ public class UserServiceStore implements UserService {
 
     private UserDAO userDAO;
 
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
+
     public List<User> selectAll() {
         return userDAO.selectAll();
     }

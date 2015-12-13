@@ -3,6 +3,7 @@ package com.epam.cdp.anton.krynytskyi.api.store;
 import com.epam.cdp.anton.krynytskyi.api.model.Event;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Anton_Krynytskyi
@@ -19,5 +20,5 @@ public interface BookingStore {
 
     boolean delete(String key);
 
-    List<Event> readAll(String partOfId);
+    List<Object> readAll(String partOfId);
 }

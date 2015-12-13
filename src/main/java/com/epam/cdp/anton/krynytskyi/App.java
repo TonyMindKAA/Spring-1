@@ -1,5 +1,10 @@
 package com.epam.cdp.anton.krynytskyi;
 
+import com.epam.cdp.anton.krynytskyi.api.store.BookingStore;
+import com.epam.cdp.anton.krynytskyi.domain.dao.store.EventDAOStore;
+import com.epam.cdp.anton.krynytskyi.domain.dao.store.TicketDAOStore;
+import com.epam.cdp.anton.krynytskyi.domain.dao.store.UserDAOStore;
+import com.epam.cdp.anton.krynytskyi.domain.facade.BookingFacadeImpl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -9,10 +14,11 @@ public class App {
         ApplicationContext context = new ClassPathXmlApplicationContext(
                 "Spring-Module.xml");
 
-        HelloWorld obj = (HelloWorld) context.getBean("helloBean");
-        obj.printHello();
+        BookingStore bookingStore = (BookingStore) context.getBean("storage");
+        System.out.println(bookingStore.readAll().size());
 
-        String canonicalName = obj.getClass().getSimpleName();
-        System.out.println("asdasdsdsa:1465486746".split(":")[1]);
+        BookingFacadeImpl bookingFacadeImpl = (BookingFacadeImpl) context.getBean("bookingFacadeImpl");
+        System.out.println(bookingFacadeImpl.deleteUser(1));
+
     }
 }

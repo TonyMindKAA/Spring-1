@@ -25,6 +25,8 @@ public class BookingFacadeImpl implements BookingFacade {
         this.userService = userService;
     }
 
+    public BookingFacadeImpl() {}
+
     public Event getEventById(long id) {
         return eventService.selectById(id);
     }
