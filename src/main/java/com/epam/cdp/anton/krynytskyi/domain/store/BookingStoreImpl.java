@@ -22,16 +22,17 @@ public class BookingStoreImpl implements BookingStore {
     };
 
     public List<Object> readAll() {
-        return new ArrayList<Object>(Arrays.asList(indexSet.toArray()));
+        return new ArrayList<Object>( Arrays.asList((store.values().toArray())));
     }
 
     public Object create(String key, Object value) {
         long newId = generateId();
         Object objWithId = setIdToObject(key, value, newId);
         if (objWithId != null) {
-            store.put(key + newId, objWithId);
+            indexSet.add(newId);
+            store.put(key + ":" + newId, objWithId);
         }
-        return store.get(key);
+        return store.get(key + ":" + newId);
     }
 
     public Object setIdToObject(String key, Object obj, long id) {
