@@ -8,9 +8,7 @@
 
 	<!-- In memory store dao -->
 	<bean id="abstractStore" abstract="true" >
-		<property name="bookingStore" >
-			<ref bean="storage"/>
-		</property>
+		<property name="bookingStore" ref="bookingStore"/>
 	</bean>
 
 	<bean id="eventDAOStore" class="com.epam.cdp.anton.krynytskyi.domain.dao.store.EventDAOStore" parent="abstractStore" />

@@ -1,12 +1,13 @@
 package com.epam.cdp.anton.krynytskyi.domain.dao.store;
 
+import static com.epam.cdp.anton.krynytskyi.domain.model.Const.USER_BEAN;
+
 import com.epam.cdp.anton.krynytskyi.api.dao.UserDAO;
 import com.epam.cdp.anton.krynytskyi.api.model.User;
 import com.epam.cdp.anton.krynytskyi.api.store.BookingStore;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class UserDAOStore implements UserDAO {
@@ -19,7 +20,7 @@ public class UserDAOStore implements UserDAO {
     }
 
     public List<User> selectAll() {
-        List<Object> objectList = bookingStore.readAll(PART_OF_ID);
+        List<Object> objectList = bookingStore.readAll(USER_BEAN);
         List<User> eventList = new ArrayList<>();
 
         objectList.stream()
@@ -34,17 +35,17 @@ public class UserDAOStore implements UserDAO {
     }
 
     public User selectById(long id) {
-        Object readUser = bookingStore.read(PART_OF_ID + id);
+        Object readUser = bookingStore.read(USER_BEAN + ":" + id);
         return readUser != null ? (User) readUser : null;
     }
 
     public User insert(User user) {
-        Object insertedUser = bookingStore.create(PART_OF_ID + user.getId(), user);
+        Object insertedUser = bookingStore.create(USER_BEAN, user);
         return user != null ? (User) insertedUser : null;
     }
 
     public User update(User user) {
-        Object updatedUser = bookingStore.update(PART_OF_ID + user.getId(), user);
+        Object updatedUser = bookingStore.update(USER_BEAN + ":" + user.getId(), user);
         return user != null ? (User) updatedUser : null;
     }
 
@@ -53,7 +54,7 @@ public class UserDAOStore implements UserDAO {
     }
 
     public boolean deleteById(long id) {
-        return bookingStore.delete(PART_OF_ID + id);
+        return bookingStore.delete(USER_BEAN + ":" + id);
     }
 
     @Override
@@ -62,7 +63,7 @@ public class UserDAOStore implements UserDAO {
         List<User> userList = events.stream()
                 .filter(e -> e.getEmail().equals(email))
                 .collect(Collectors.toList());
-        return userList.size() >0? userList.get(0): null;
+        return userList.size() > 0 ? userList.get(0) : null;
     }
 
     @Override

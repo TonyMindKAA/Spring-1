@@ -1,7 +1,6 @@
 package com.epam.cdp.anton.krynytskyi.domain.model;
 
-/**
- * Created by Home on 13.12.2015.
- */
-public class AbstractBean {
+public interface AbstractBean {
+    long getId();
+    void setId(long id);
 }

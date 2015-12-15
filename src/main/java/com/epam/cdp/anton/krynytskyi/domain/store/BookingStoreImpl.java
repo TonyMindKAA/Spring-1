@@ -1,28 +1,33 @@
 package com.epam.cdp.anton.krynytskyi.domain.store;
 
-import com.epam.cdp.anton.krynytskyi.api.model.Event;
 import com.epam.cdp.anton.krynytskyi.api.object.casting.SetterId;
 import com.epam.cdp.anton.krynytskyi.api.store.BookingStore;
+import com.epam.cdp.anton.krynytskyi.domain.model.Const;
 import com.epam.cdp.anton.krynytskyi.domain.setter.id.SetterIdEventBean;
 import com.epam.cdp.anton.krynytskyi.domain.setter.id.SetterIdTicketBean;
 import com.epam.cdp.anton.krynytskyi.domain.setter.id.SetterIdUserBean;
+import com.google.common.collect.Lists;
 
 import java.util.*;
 
+import static com.epam.cdp.anton.krynytskyi.domain.model.Const.*;
+import static com.epam.cdp.anton.krynytskyi.domain.model.Const.TICKET_BEAN;
+import static com.epam.cdp.anton.krynytskyi.domain.model.Const.USER_BEAN;
+
 public class BookingStoreImpl implements BookingStore {
 
-    private Map<String, Object> store = new HashMap<String, Object>();
-    private Set<Long> indexSet = new HashSet<Long>();
+    private Map<String, Object> store = new HashMap<>();
+    private Set<Long> indexSet = new HashSet<>();
     private Map<String, SetterId> casterMap = new HashMap<String, SetterId>() {
         {
-            put("EventBean", new SetterIdEventBean());
-            put("TicketBean", new SetterIdTicketBean());
-            put("UserBean", new SetterIdUserBean());
+            put(EVENT_BEAN, new SetterIdEventBean());
+            put(TICKET_BEAN, new SetterIdTicketBean());
+            put(USER_BEAN, new SetterIdUserBean());
         }
     };
 
     public List<Object> readAll() {
-        return new ArrayList<Object>( Arrays.asList((store.values().toArray())));
+        return new ArrayList<>(Arrays.asList((store.values().toArray())));
     }
 
     public Object create(String key, Object value) {
@@ -64,7 +69,21 @@ public class BookingStoreImpl implements BookingStore {
 
     @Override
     public List<Object> readAll(String partOfId) {
-        return null;
+        ArrayList<String> keys = new ArrayList<>();
+        ArrayList<Object> results = new ArrayList<>();
+
+        ArrayList<Object> objects = Lists.newArrayList(store.keySet().toArray());
+        objects.stream()
+                .filter(val-> ((String)val).startsWith(partOfId))
+                .forEach(val -> keys.add((String) val));
+
+        keys.stream().forEach(key ->{
+            Object temp = store.get(key);
+            if(Objects.nonNull(temp)){
+                results.add(temp);
+            }
+        });
+        return results;
     }
 
     private long partId(String key) {

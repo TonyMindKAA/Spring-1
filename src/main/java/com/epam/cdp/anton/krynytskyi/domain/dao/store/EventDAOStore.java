@@ -1,8 +1,11 @@
 package com.epam.cdp.anton.krynytskyi.domain.dao.store;
 
+import static com.epam.cdp.anton.krynytskyi.domain.model.Const.EVENT_BEAN;
+
 import com.epam.cdp.anton.krynytskyi.api.dao.EventDAO;
 import com.epam.cdp.anton.krynytskyi.api.model.Event;
 import com.epam.cdp.anton.krynytskyi.api.store.BookingStore;
+import com.epam.cdp.anton.krynytskyi.domain.model.Const;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -17,7 +20,7 @@ public class EventDAOStore implements EventDAO {
     }
 
     public List<Event> selectAll() {
-        List<Object> objectList = bookingStore.readAll(PART_OF_ID);
+        List<Object> objectList = bookingStore.readAll(EVENT_BEAN);
         List<Event> eventList = new ArrayList<>();
 
         objectList.stream()
@@ -37,12 +40,12 @@ public class EventDAOStore implements EventDAO {
     }
 
     public Event insert(Event event) {
-        Object insertedEvent = bookingStore.create(PART_OF_ID + event.getId(), event);
+        Object insertedEvent = bookingStore.create(EVENT_BEAN, event);
         return event != null ? (Event) insertedEvent : null;
     }
 
     public Event update(Event event) {
-        Object updatedEvent = bookingStore.update(PART_OF_ID + event.getId(), event);
+        Object updatedEvent = bookingStore.update(EVENT_BEAN + ":" + event.getId(), event);
         return event != null ? (Event) updatedEvent : null;
     }
 
@@ -51,7 +54,7 @@ public class EventDAOStore implements EventDAO {
     }
 
     public boolean deleteById(long id) {
-        return bookingStore.delete(PART_OF_ID + id);
+        return bookingStore.delete(EVENT_BEAN + ":" + id);
     }
 
     public List<Event> selectByTitle(final String title, final int pageSize, final int pageNum) {
