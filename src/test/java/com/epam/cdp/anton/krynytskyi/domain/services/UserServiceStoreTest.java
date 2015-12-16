@@ -47,7 +47,7 @@ public class UserServiceStoreTest {
     }
 
     @Test
-    public void shoutReturnEventsById_whenInvokeSelectById() {
+    public void shoutReturnUserById_whenInvokeSelectById() {
 
         User ticket = userServiceStore.insert(new UserBean());
 
@@ -95,7 +95,7 @@ public class UserServiceStoreTest {
     }
 
     @Test
-    public void shoutReturnNull_whenTryToUpdateNotExistEvent() {
+    public void shoutReturnNull_whenTryToUpdateNotExistUser() {
 
         User updateObj = new UserBean();
         int notExistElement = 999999999;
@@ -112,7 +112,7 @@ public class UserServiceStoreTest {
     }
 
     @Test
-    public void shoutReturnFalse_whenTryDeleteByIdNotExistEvent() {
+    public void shoutReturnFalse_whenTryDeleteByIdNotExistUser() {
 
         int notExistElement = 999999999;
 

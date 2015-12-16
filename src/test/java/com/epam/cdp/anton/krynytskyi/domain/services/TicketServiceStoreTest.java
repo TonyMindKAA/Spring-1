@@ -89,7 +89,7 @@ public class TicketServiceStoreTest {
     }
 
     @Test
-    public void shoutReturnNull_whenTryToUpdateNotExistEvent() {
+    public void shoutReturnNull_whenTryToUpdateNotExistTicket() {
         Ticket updateObj = new TicketBean();
         int notExistElement = 999999999;
         updateObj.setId(notExistElement);
@@ -105,7 +105,7 @@ public class TicketServiceStoreTest {
     }
 
     @Test
-    public void shoutReturnFalse_whenTryDeleteByIdNotExistEvent() {
+    public void shoutReturnFalse_whenTryDeleteByIdNotExistTicket() {
 
         int notExistElement = 999999999;
 
