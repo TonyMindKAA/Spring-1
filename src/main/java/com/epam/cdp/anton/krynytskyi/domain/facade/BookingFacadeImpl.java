@@ -90,4 +90,11 @@ public class BookingFacadeImpl implements BookingFacade {
     public boolean cancelTicket(long ticketId) {
         return ticketService.deleteById(ticketId);
     }
+
+    public int size(){
+        int size = eventService.selectAll().size() +
+                   userService.selectAll().size() +
+                   ticketService.selectAll().size();
+        return size;
+    }
 }

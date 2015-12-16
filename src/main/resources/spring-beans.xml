@@ -35,4 +35,6 @@
 		<constructor-arg type="com.epam.cdp.anton.krynytskyi.api.services.UserService" ref="userServiceStore" />
 	</bean>
 
+	<bean class="com.epam.cdp.anton.krynytskyi.domain.model.post.processor.FacadeInitProcessor" />
+
 </beans>

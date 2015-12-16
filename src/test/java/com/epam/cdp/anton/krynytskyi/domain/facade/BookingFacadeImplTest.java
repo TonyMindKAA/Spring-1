@@ -8,15 +8,21 @@ import com.epam.cdp.anton.krynytskyi.api.facade.BookingFacade;
 import com.epam.cdp.anton.krynytskyi.api.model.Event;
 import com.epam.cdp.anton.krynytskyi.api.model.Ticket;
 import com.epam.cdp.anton.krynytskyi.api.model.User;
+import com.epam.cdp.anton.krynytskyi.domain.dao.store.EventDAOStore;
+import com.epam.cdp.anton.krynytskyi.domain.dao.store.TicketDAOStore;
+import com.epam.cdp.anton.krynytskyi.domain.dao.store.UserDAOStore;
 import com.epam.cdp.anton.krynytskyi.domain.model.EventBean;
 import com.epam.cdp.anton.krynytskyi.domain.model.UserBean;
+import com.epam.cdp.anton.krynytskyi.domain.services.EventServiceStore;
+import com.epam.cdp.anton.krynytskyi.domain.services.TicketServiceStore;
+import com.epam.cdp.anton.krynytskyi.domain.services.UserServiceStore;
+import com.epam.cdp.anton.krynytskyi.domain.store.BookingStoreImpl;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.Date;
 
@@ -25,11 +31,38 @@ public class BookingFacadeImplTest {
 
     private BookingFacade bookingFacade;
 
+    @InjectMocks
+    private UserServiceStore userService;
+
+    @InjectMocks
+    private TicketServiceStore ticketService;
+
+    @InjectMocks
+    private EventServiceStore eventService;
+
+    @InjectMocks
+    private UserDAOStore userDAO;
+
+    @InjectMocks
+    private TicketDAOStore ticketDAO;
+
+    @InjectMocks
+    private EventDAOStore eventDAO;
+
+
     @Before
     public void initialize() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("spring-beans.xml");
-        bookingFacade = context.getBean(BookingFacadeImpl.class);
+        BookingStoreImpl bookingStore = new BookingStoreImpl();
 
+        eventDAO.setBookingStore(bookingStore);
+        userDAO.setBookingStore(bookingStore);
+        ticketDAO.setBookingStore(bookingStore);
+
+        eventService.setEventDAO(eventDAO);
+        userService.setUserDAO(userDAO);
+        ticketService.setTicketDAO(ticketDAO);
+
+        bookingFacade = new BookingFacadeImpl(eventService, ticketService, userService);
     }
 
     @Test
@@ -245,7 +278,7 @@ public class BookingFacadeImplTest {
     }
 
     @Test
-    public void shoutReturnOneEventsForDay_whenInvokeSelectForDayPageSizeTwoPageSecond() {
+    public void shoutReturnOneEventForDay_whenInvokeSelectForDayMethodWithPageSizeTwoPageSecond() {
 
         long beforeDec_15_2015 = 1450055646943l;
         long dec_15_2015 = 1450188646943l;
