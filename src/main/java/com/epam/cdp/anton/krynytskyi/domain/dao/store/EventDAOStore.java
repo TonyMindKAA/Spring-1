@@ -1,18 +1,20 @@
 package com.epam.cdp.anton.krynytskyi.domain.dao.store;
 
 import static com.epam.cdp.anton.krynytskyi.domain.model.Const.EVENT_BEAN;
+import static java.util.Objects.nonNull;
 
 import com.epam.cdp.anton.krynytskyi.api.dao.EventDAO;
 import com.epam.cdp.anton.krynytskyi.api.model.Event;
 import com.epam.cdp.anton.krynytskyi.api.store.BookingStore;
-import com.epam.cdp.anton.krynytskyi.domain.model.Const;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class EventDAOStore implements EventDAO {
 
-    public static final String PART_OF_ID = "event:";
     private BookingStore bookingStore;
 
     public void setBookingStore(BookingStore bookingStore) {
@@ -35,22 +37,22 @@ public class EventDAOStore implements EventDAO {
     }
 
     public Event selectById(long id) {
-        Object read = bookingStore.read(PART_OF_ID + id);
-        return read != null ? (Event) read : null;
+        Object read = bookingStore.read(EVENT_BEAN + ":" + id);
+        return nonNull(read) ? (Event) read : null;
     }
 
     public Event insert(Event event) {
         Object insertedEvent = bookingStore.create(EVENT_BEAN, event);
-        return event != null ? (Event) insertedEvent : null;
+        return nonNull(event) ? (Event) insertedEvent : null;
     }
 
     public Event update(Event event) {
         Object updatedEvent = bookingStore.update(EVENT_BEAN + ":" + event.getId(), event);
-        return event != null ? (Event) updatedEvent : null;
+        return nonNull(updatedEvent) ? (Event) updatedEvent : null;
     }
 
     public boolean delete(Event event) {
-        return event != null ? deleteById(event.getId()) : false;
+        return nonNull(event)? deleteById(event.getId()) : false;
     }
 
     public boolean deleteById(long id) {

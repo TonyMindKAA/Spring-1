@@ -1,6 +1,7 @@
 package com.epam.cdp.anton.krynytskyi.domain.dao.store;
 
 import static com.epam.cdp.anton.krynytskyi.domain.model.Const.TICKET_BEAN;
+import static java.util.Objects.nonNull;
 
 import com.epam.cdp.anton.krynytskyi.api.dao.TicketDAO;
 import com.epam.cdp.anton.krynytskyi.api.model.Event;
@@ -15,7 +16,6 @@ import java.util.stream.Collectors;
 
 public class TicketDAOStore implements TicketDAO {
 
-    public static final String PART_OF_ID = "ticket:";
     private BookingStore bookingStore;
 
     public void setBookingStore(BookingStore bookingStore) {
@@ -39,21 +39,21 @@ public class TicketDAOStore implements TicketDAO {
 
     public Ticket selectById(long id) {
         Object readTicket = bookingStore.read(TICKET_BEAN + ":" + id);
-        return readTicket != null ? (Ticket) readTicket : null;
+        return nonNull(readTicket) ? (Ticket) readTicket : null;
     }
 
     public Ticket insert(Ticket ticket) {
         Object insertedTicket = bookingStore.create(TICKET_BEAN, ticket);
-        return ticket != null ? (Ticket) insertedTicket : null;
+        return nonNull(insertedTicket) ? (Ticket) insertedTicket : null;
     }
 
     public Ticket update(Ticket ticket) {
         Object updatedTicket = bookingStore.update(TICKET_BEAN + ":" + ticket.getId(), ticket);
-        return ticket != null ? (Ticket) updatedTicket : null;
+        return nonNull(updatedTicket) ? (Ticket) updatedTicket : null;
     }
 
     public boolean delete(Ticket ticket) {
-        return ticket != null ? deleteById(ticket.getId()) : false;
+        return nonNull(ticket) ? deleteById(ticket.getId()) : false;
     }
 
     public boolean deleteById(long id) {

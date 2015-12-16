@@ -1,24 +1,35 @@
 package com.epam.cdp.anton.krynytskyi.domain.store;
 
+import static com.epam.cdp.anton.krynytskyi.domain.model.Const.EVENT_BEAN;
+import static com.epam.cdp.anton.krynytskyi.domain.model.Const.TICKET_BEAN;
+import static com.epam.cdp.anton.krynytskyi.domain.model.Const.USER_BEAN;
+import static java.util.Objects.nonNull;
+
 import com.epam.cdp.anton.krynytskyi.api.object.casting.SetterId;
 import com.epam.cdp.anton.krynytskyi.api.store.BookingStore;
-import com.epam.cdp.anton.krynytskyi.domain.model.Const;
 import com.epam.cdp.anton.krynytskyi.domain.setter.id.SetterIdEventBean;
 import com.epam.cdp.anton.krynytskyi.domain.setter.id.SetterIdTicketBean;
 import com.epam.cdp.anton.krynytskyi.domain.setter.id.SetterIdUserBean;
 import com.google.common.collect.Lists;
 
-import java.util.*;
+import org.apache.log4j.Logger;
 
-import static com.epam.cdp.anton.krynytskyi.domain.model.Const.*;
-import static com.epam.cdp.anton.krynytskyi.domain.model.Const.TICKET_BEAN;
-import static com.epam.cdp.anton.krynytskyi.domain.model.Const.USER_BEAN;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Random;
+import java.util.Set;
 
 public class BookingStoreImpl implements BookingStore {
 
+    private static Logger LOG = Logger.getLogger("BookingStoreImpl");
     private Map<String, Object> store = new HashMap<>();
     private Set<Long> indexSet = new HashSet<>();
-    private Map<String, SetterId> casterMap = new HashMap<String, SetterId>() {
+    private Map<String, SetterId> setterIdMap = new HashMap<String, SetterId>() {
         {
             put(EVENT_BEAN, new SetterIdEventBean());
             put(TICKET_BEAN, new SetterIdTicketBean());
@@ -33,16 +44,21 @@ public class BookingStoreImpl implements BookingStore {
     public Object create(String key, Object value) {
         long newId = generateId();
         Object objWithId = setIdToObject(key, value, newId);
-        if (objWithId != null) {
+        if (nonNull(objWithId)) {
             indexSet.add(newId);
             store.put(key + ":" + newId, objWithId);
+        }else{
+            LOG.debug("Didn't add to store object.");
         }
         return store.get(key + ":" + newId);
     }
 
     public Object setIdToObject(String key, Object obj, long id) {
-        SetterId caster = casterMap.get(key);
-        return caster != null ? caster.setId(obj, id) : null;
+        SetterId setterId = setterIdMap.get(key);
+        if(Objects.isNull(setterId)){
+            LOG.debug("Didn't find setter id for object.");
+        }
+        return nonNull(setterId) ? setterId.setId(obj, id) : null;
     }
 
     public Object read(String key) {
@@ -51,7 +67,7 @@ public class BookingStoreImpl implements BookingStore {
 
     public Object update(String key, Object value) {
         Object previousVersion = store.get(key);
-        if (previousVersion != null) {
+        if (nonNull(previousVersion)) {
             store.put(key, value);
         }
         return previousVersion;
@@ -63,6 +79,8 @@ public class BookingStoreImpl implements BookingStore {
             store.remove(key);
             indexSet.remove(id);
             return true;
+        }else {
+            LOG.debug("Didn't find setter id for object.");
         }
         return false;
     }
@@ -79,7 +97,7 @@ public class BookingStoreImpl implements BookingStore {
 
         keys.stream().forEach(key ->{
             Object temp = store.get(key);
-            if(Objects.nonNull(temp)){
+            if(nonNull(temp)){
                 results.add(temp);
             }
         });
@@ -95,6 +113,7 @@ public class BookingStoreImpl implements BookingStore {
         try {
             return Long.parseLong(keyPart);
         } catch (NumberFormatException e) {
+            LOG.debug("Second part of key not a long");
             return -1;
         }
     }

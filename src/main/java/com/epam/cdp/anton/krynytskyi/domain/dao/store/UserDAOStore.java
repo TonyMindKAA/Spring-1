@@ -1,6 +1,7 @@
 package com.epam.cdp.anton.krynytskyi.domain.dao.store;
 
 import static com.epam.cdp.anton.krynytskyi.domain.model.Const.USER_BEAN;
+import static java.util.Objects.nonNull;
 
 import com.epam.cdp.anton.krynytskyi.api.dao.UserDAO;
 import com.epam.cdp.anton.krynytskyi.api.model.User;
@@ -12,7 +13,6 @@ import java.util.stream.Collectors;
 
 public class UserDAOStore implements UserDAO {
 
-    public static final String PART_OF_ID = "ticket:";
     private BookingStore bookingStore;
 
     public void setBookingStore(BookingStore bookingStore) {
@@ -36,21 +36,21 @@ public class UserDAOStore implements UserDAO {
 
     public User selectById(long id) {
         Object readUser = bookingStore.read(USER_BEAN + ":" + id);
-        return readUser != null ? (User) readUser : null;
+        return nonNull(readUser) ? (User) readUser : null;
     }
 
     public User insert(User user) {
         Object insertedUser = bookingStore.create(USER_BEAN, user);
-        return user != null ? (User) insertedUser : null;
+        return nonNull(insertedUser) ? (User) insertedUser : null;
     }
 
     public User update(User user) {
         Object updatedUser = bookingStore.update(USER_BEAN + ":" + user.getId(), user);
-        return user != null ? (User) updatedUser : null;
+        return nonNull(updatedUser) ? (User) updatedUser : null;
     }
 
     public boolean delete(User user) {
-        return user != null ? deleteById(user.getId()) : false;
+        return nonNull(user) ? deleteById(user.getId()) : false;
     }
 
     public boolean deleteById(long id) {
