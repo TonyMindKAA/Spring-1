@@ -4,14 +4,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import com.epam.cdp.anton.krynytskyi.dao.store.EventDAOStore;
+import com.epam.cdp.anton.krynytskyi.facade.impl.BookingFacadeImpl;
 import com.epam.cdp.anton.krynytskyi.model.Event;
 import com.epam.cdp.anton.krynytskyi.model.impl.EventBean;
 import com.epam.cdp.anton.krynytskyi.store.impl.BookingStoreImpl;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.Date;
 
@@ -22,60 +26,52 @@ public class EventDAOStoreTest {
     @InjectMocks
     private EventDAOStore eventDAOStore;
 
+    @Before
+    public void init() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("spring-beans.xml");
+        eventDAOStore = context.getBean(EventDAOStore.class);
+    }
+
     @Test
     public void shoutReturnEmptyListOfEvents_whenInvokeSelectAll() {
-        eventDAOStore.setBookingStore(new BookingStoreImpl());
-
         assertThat(eventDAOStore.selectAll().isEmpty()).isTrue();
     }
 
     @Test
     public void shoutReturnListOfEventsWithThreeElements_whenInvokeSelectAll() {
-        eventDAOStore.setBookingStore(new BookingStoreImpl());
-
         eventDAOStore.insert(new EventBean());
         eventDAOStore.insert(new EventBean());
         eventDAOStore.insert(new EventBean());
 
         assertEquals(eventDAOStore.selectAll().size(), 3);
-
     }
 
     @Test
     public void shoutReturnEventsById_whenInvokeSelectById() {
-        eventDAOStore.setBookingStore(new BookingStoreImpl());
-
         Event newEvent = eventDAOStore.insert(new EventBean());
 
         assertEquals(eventDAOStore.selectById(newEvent.getId()).getId(), newEvent.getId());
-
     }
 
     @Test
     public void shoutInvokeSelectByIdReturnNull_whenPutWrongId() {
-        eventDAOStore.setBookingStore(new BookingStoreImpl());
 
         Event newEvent = eventDAOStore.insert(new EventBean());
 
         int wrongId = 222222;
         assertThat(eventDAOStore.selectById(wrongId)).isNull();
-
     }
 
     @Test
     public void shoutInsertOneElement_whenInvokeInsertMethod() {
-        eventDAOStore.setBookingStore(new BookingStoreImpl());
 
         Event newEvent = eventDAOStore.insert(new EventBean());
 
         assertEquals(eventDAOStore.selectAll().size(), 1);
-
     }
 
     @Test
     public void shoutUpdateOneElement_whenInvokeUpdateMethod() {
-        eventDAOStore.setBookingStore(new BookingStoreImpl());
-
         Event updateObj = new EventBean();
         Event newEvent = eventDAOStore.insert(new EventBean());
 
@@ -94,8 +90,6 @@ public class EventDAOStoreTest {
 
     @Test
     public void shoutReturnNull_whenTryToUpdateNotExistEvent() {
-        eventDAOStore.setBookingStore(new BookingStoreImpl());
-
         Event updateObj = new EventBean();
         int notExistElement = 999999999;
         updateObj.setId(notExistElement);
@@ -104,8 +98,6 @@ public class EventDAOStoreTest {
 
     @Test
     public void shoutDeleteEvent_whenInvokDeleteByIdMethod() {
-        eventDAOStore.setBookingStore(new BookingStoreImpl());
-
         Event newObject = eventDAOStore.insert(new EventBean());
 
         assertThat(eventDAOStore.deleteById(newObject.getId())).isTrue();
@@ -113,8 +105,6 @@ public class EventDAOStoreTest {
 
     @Test
     public void shoutReturnFalse_whenTryDeleteByIdNotExistEvent() {
-        eventDAOStore.setBookingStore(new BookingStoreImpl());
-
         int notExistElement = 999999999;
 
         assertThat(eventDAOStore.deleteById(notExistElement)).isFalse();
@@ -122,8 +112,6 @@ public class EventDAOStoreTest {
 
     @Test
     public void shoutDeleteEvent_whenInvokDeleteMethod() {
-        eventDAOStore.setBookingStore(new BookingStoreImpl());
-
         Event newObject = eventDAOStore.insert(new EventBean());
 
         assertThat(eventDAOStore.delete(newObject)).isTrue();
@@ -131,8 +119,6 @@ public class EventDAOStoreTest {
 
     @Test
     public void shoutReturnFalse_whenTryDeleteNotExistEvent() {
-        eventDAOStore.setBookingStore(new BookingStoreImpl());
-
         int notExistElement = 999999999;
         Event newObject = new EventBean() {{
             setId(notExistElement);
@@ -143,8 +129,6 @@ public class EventDAOStoreTest {
 
     @Test
     public void shoutReturnThreeEventsWithSomeTittle_whenInvokeSelectByTittle() {
-        eventDAOStore.setBookingStore(new BookingStoreImpl());
-
         eventDAOStore.insert(new EventBean() {{
             setTitle("t1");
         }});
@@ -172,8 +156,6 @@ public class EventDAOStoreTest {
 
     @Test
     public void shoutReturnZeroEventsWithSomeTittle_whenInvokeSelectByTittlePageSizeThreePageSecond() {
-        eventDAOStore.setBookingStore(new BookingStoreImpl());
-
         eventDAOStore.insert(new EventBean() {{
             setTitle("t1");
         }});
@@ -201,8 +183,6 @@ public class EventDAOStoreTest {
 
     @Test
     public void shoutReturnOneEventsWithSomeTittle_whenInvokeSelectByTittlePageSizeTwoPageSecond() {
-        eventDAOStore.setBookingStore(new BookingStoreImpl());
-
         eventDAOStore.insert(new EventBean() {{
             setTitle("t1");
         }});
@@ -230,8 +210,6 @@ public class EventDAOStoreTest {
 
     @Test
     public void shoutReturnOneEventsForDay_whenInvokeSelectForDayPageSizeThreePageFirst() {
-        eventDAOStore.setBookingStore(new BookingStoreImpl());
-
         long beforeDec_15_2015 = 1450055646943l;
         long dec_15_2015 = 1450188646943l;
         eventDAOStore.insert(new EventBean() {{
@@ -257,13 +235,10 @@ public class EventDAOStoreTest {
         }});
 
         assertEquals(eventDAOStore.selectForDay(new Date(beforeDec_15_2015), 3, 1).size(), 3);
-
     }
 
     @Test
     public void shoutReturnOneEventsForDay_whenInvokeSelectForDayPageSizeThreePageSecond() {
-        eventDAOStore.setBookingStore(new BookingStoreImpl());
-
         long beforeDec_15_2015 = 1450055646943l;
         long dec_15_2015 = 1450188646943l;
         eventDAOStore.insert(new EventBean() {{
@@ -289,13 +264,10 @@ public class EventDAOStoreTest {
         }});
 
         assertEquals(eventDAOStore.selectForDay(new Date(beforeDec_15_2015), 3, 2).size(), 0);
-
     }
 
     @Test
     public void shoutReturnOneEventsForDay_whenInvokeSelectForDayPageSizeTwoPageSecond() {
-        eventDAOStore.setBookingStore(new BookingStoreImpl());
-
         long beforeDec_15_2015 = 1450055646943l;
         long dec_15_2015 = 1450188646943l;
         eventDAOStore.insert(new EventBean() {{

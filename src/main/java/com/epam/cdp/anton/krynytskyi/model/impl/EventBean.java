@@ -1,14 +1,24 @@
 package com.epam.cdp.anton.krynytskyi.model.impl;
-import com.epam.cdp.anton.krynytskyi.model.Event;
+
 import com.epam.cdp.anton.krynytskyi.model.AbstractBean;
+import com.epam.cdp.anton.krynytskyi.model.Event;
 
 import java.util.Date;
 
-public class EventBean extends AbstractBean implements Event{
+public class EventBean extends AbstractBean implements Event {
 
     private long id;
     private String title;
     private Date date;
+    private long ticketPrice;
+
+    public long getTicketPrice() {
+        return ticketPrice;
+    }
+
+    public void setTicketPrice(long ticketPrice) {
+        this.ticketPrice = ticketPrice;
+    }
 
     public long getId() {
         return this.id;

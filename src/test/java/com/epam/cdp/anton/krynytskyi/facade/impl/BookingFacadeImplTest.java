@@ -1,69 +1,40 @@
 package com.epam.cdp.anton.krynytskyi.facade.impl;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import com.epam.cdp.anton.krynytskyi.facade.BookingFacade;
-import com.epam.cdp.anton.krynytskyi.facade.impl.BookingFacadeImpl;
-import com.epam.cdp.anton.krynytskyi.model.Event;
-import com.epam.cdp.anton.krynytskyi.model.Ticket;
-import com.epam.cdp.anton.krynytskyi.model.User;
 import com.epam.cdp.anton.krynytskyi.dao.store.EventDAOStore;
 import com.epam.cdp.anton.krynytskyi.dao.store.TicketDAOStore;
 import com.epam.cdp.anton.krynytskyi.dao.store.UserDAOStore;
+import com.epam.cdp.anton.krynytskyi.facade.BookingFacade;
+import com.epam.cdp.anton.krynytskyi.model.Event;
+import com.epam.cdp.anton.krynytskyi.model.Ticket;
+import com.epam.cdp.anton.krynytskyi.model.User;
 import com.epam.cdp.anton.krynytskyi.model.impl.EventBean;
 import com.epam.cdp.anton.krynytskyi.model.impl.UserBean;
 import com.epam.cdp.anton.krynytskyi.services.impl.EventServiceStore;
 import com.epam.cdp.anton.krynytskyi.services.impl.TicketServiceStore;
 import com.epam.cdp.anton.krynytskyi.services.impl.UserServiceStore;
-import com.epam.cdp.anton.krynytskyi.store.impl.BookingStoreImpl;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.Date;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BookingFacadeImplTest {
 
     private BookingFacade bookingFacade;
 
-    @InjectMocks
-    private UserServiceStore userService;
-
-    @InjectMocks
-    private TicketServiceStore ticketService;
-
-    @InjectMocks
-    private EventServiceStore eventService;
-
-    @InjectMocks
-    private UserDAOStore userDAO;
-
-    @InjectMocks
-    private TicketDAOStore ticketDAO;
-
-    @InjectMocks
-    private EventDAOStore eventDAO;
-
-
     @Before
     public void initialize() {
-        BookingStoreImpl bookingStore = new BookingStoreImpl();
-
-        eventDAO.setBookingStore(bookingStore);
-        userDAO.setBookingStore(bookingStore);
-        ticketDAO.setBookingStore(bookingStore);
-
-        eventService.setEventDAO(eventDAO);
-        userService.setUserDAO(userDAO);
-        ticketService.setTicketDAO(ticketDAO);
-
-        bookingFacade = new BookingFacadeImpl(eventService, ticketService, userService);
+        ApplicationContext context = new ClassPathXmlApplicationContext("spring-beans.xml");
+        bookingFacade = context.getBean(BookingFacadeImpl.class);
     }
 
     @Test
@@ -219,8 +190,8 @@ public class BookingFacadeImplTest {
     @Test
     public void shoutReturnOneEventsForDay_whenInvokeSelectForDayPageSizeThreePageFirst() {
 
-        long beforeDec_15_2015 = 1450055646943l;
-        long dec_15_2015 = 1450188646943l;
+        long beforeDec_15_2015 = 1450055646943L;
+        long dec_15_2015 = 1450188646943L;
         bookingFacade.createEvent(new EventBean() {{
             setDate(new Date(dec_15_2015));
         }});
@@ -250,8 +221,8 @@ public class BookingFacadeImplTest {
     @Test
     public void shoutReturnOneEventsForDay_whenInvokeSelectForDayPageSizeThreePageSecond() {
 
-        long beforeDec_15_2015 = 1450055646943l;
-        long dec_15_2015 = 1450188646943l;
+        long beforeDec_15_2015 = 1450055646943L;
+        long dec_15_2015 = 1450188646943L;
         bookingFacade.createEvent(new EventBean() {{
             setDate(new Date(dec_15_2015));
         }});
@@ -281,8 +252,8 @@ public class BookingFacadeImplTest {
     @Test
     public void shoutReturnOneEventForDay_whenInvokeSelectForDayMethodWithPageSizeTwoPageSecond() {
 
-        long beforeDec_15_2015 = 1450055646943l;
-        long dec_15_2015 = 1450188646943l;
+        long beforeDec_15_2015 = 1450055646943L;
+        long dec_15_2015 = 1450188646943L;
         bookingFacade.createEvent(new EventBean() {{
             setDate(new Date(dec_15_2015));
         }});
@@ -323,7 +294,7 @@ public class BookingFacadeImplTest {
         assertEquals(bookingFacade.getBookedTickets(new UserBean() {{
             setId(555L);
         }}, 3, 1)
-                             .size(), 3);
+                .size(), 3);
     }
 
     @Test
@@ -356,7 +327,7 @@ public class BookingFacadeImplTest {
         assertEquals(bookingFacade.getBookedTickets(new UserBean() {{
             setId(555L);
         }}, 2, 2)
-                             .size(), 1);
+                .size(), 1);
     }
 
 

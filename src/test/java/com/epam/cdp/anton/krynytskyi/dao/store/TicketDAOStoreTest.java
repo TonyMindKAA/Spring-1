@@ -10,28 +10,32 @@ import com.epam.cdp.anton.krynytskyi.model.impl.TicketBean;
 import com.epam.cdp.anton.krynytskyi.model.impl.UserBean;
 import com.epam.cdp.anton.krynytskyi.store.impl.BookingStoreImpl;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TicketDAOStoreTest {
 
-    @InjectMocks
     private TicketDAOStore ticketDAOStore;
+
+    @Before
+    public void init() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("spring-beans.xml");
+        ticketDAOStore = context.getBean(TicketDAOStore.class);
+    }
 
     @Test
     public void shoutReturnEmptyListOfEvents_whenInvokeSelectAll() {
-        ticketDAOStore.setBookingStore(new BookingStoreImpl());
-
         assertThat(ticketDAOStore.selectAll().isEmpty()).isTrue();
     }
 
     @Test
     public void shoutReturnListOfEventsWithThreeElements_whenInvokeSelectAll() {
-        ticketDAOStore.setBookingStore(new BookingStoreImpl());
-
         ticketDAOStore.insert(new TicketBean());
         ticketDAOStore.insert(new TicketBean());
         ticketDAOStore.insert(new TicketBean());
@@ -42,8 +46,6 @@ public class TicketDAOStoreTest {
 
     @Test
     public void shoutReturnEventsById_whenInvokeSelectById() {
-        ticketDAOStore.setBookingStore(new BookingStoreImpl());
-
         Ticket ticket = ticketDAOStore.insert(new TicketBean());
 
         assertEquals(ticketDAOStore.selectById(ticket.getId()).getId(), ticket.getId());
@@ -52,8 +54,6 @@ public class TicketDAOStoreTest {
 
     @Test
     public void shoutInvokeSelectByIdReturnNull_whenPutWrongId() {
-        ticketDAOStore.setBookingStore(new BookingStoreImpl());
-
         ticketDAOStore.insert(new TicketBean());
 
         int wrongId = 222222;
@@ -63,8 +63,6 @@ public class TicketDAOStoreTest {
 
     @Test
     public void shoutInsertOneElement_whenInvokeInsertMethod() {
-        ticketDAOStore.setBookingStore(new BookingStoreImpl());
-
         ticketDAOStore.insert(new TicketBean());
 
         assertEquals(ticketDAOStore.selectAll().size(), 1);
@@ -73,8 +71,6 @@ public class TicketDAOStoreTest {
 
     @Test
     public void shoutUpdateOneElement_whenInvokeUpdateMethod() {
-        ticketDAOStore.setBookingStore(new BookingStoreImpl());
-
         Ticket updateObj = new TicketBean();
         Ticket ticket = ticketDAOStore.insert(new TicketBean());
 
@@ -94,8 +90,6 @@ public class TicketDAOStoreTest {
 
     @Test
     public void shoutReturnNull_whenTryToUpdateNotExistEvent() {
-        ticketDAOStore.setBookingStore(new BookingStoreImpl());
-
         Ticket updateObj = new TicketBean();
         int notExistElement = 999999999;
         updateObj.setId(notExistElement);
@@ -104,8 +98,6 @@ public class TicketDAOStoreTest {
 
     @Test
     public void shoutDeleteEvent_whenInvokDeleteByIdMethod() {
-        ticketDAOStore.setBookingStore(new BookingStoreImpl());
-
         Ticket newObject = ticketDAOStore.insert(new TicketBean());
 
         assertThat(ticketDAOStore.deleteById(newObject.getId())).isTrue();
@@ -113,8 +105,6 @@ public class TicketDAOStoreTest {
 
     @Test
     public void shoutReturnFalse_whenTryDeleteByIdNotExistEvent() {
-        ticketDAOStore.setBookingStore(new BookingStoreImpl());
-
         int notExistElement = 999999999;
 
         assertThat(ticketDAOStore.deleteById(notExistElement)).isFalse();
@@ -122,8 +112,6 @@ public class TicketDAOStoreTest {
 
     @Test
     public void shoutDeleteEvent_whenInvokDeleteMethod() {
-        ticketDAOStore.setBookingStore(new BookingStoreImpl());
-
         Ticket newObject = ticketDAOStore.insert(new TicketBean());
 
         assertThat(ticketDAOStore.delete(newObject)).isTrue();
@@ -131,8 +119,6 @@ public class TicketDAOStoreTest {
 
     @Test
     public void shoutReturnFalse_whenTryDeleteNotExistEvent() {
-        ticketDAOStore.setBookingStore(new BookingStoreImpl());
-
         int notExistElement = 999999999;
         Ticket newObject = new TicketBean() {{
             setId(notExistElement);
@@ -143,8 +129,6 @@ public class TicketDAOStoreTest {
 
     @Test
     public void shouldBookTicket_whenPutValidParams() {
-        ticketDAOStore.setBookingStore(new BookingStoreImpl());
-
         ticketDAOStore.bookTicket(586, 23L, 23, Ticket.Category.PREMIUM);
 
         assertEquals(ticketDAOStore.selectAll().size(), 1);
@@ -152,8 +136,6 @@ public class TicketDAOStoreTest {
 
     @Test
     public void shouldGetBookedTicketByUserThreeElement_whenPageSizeThreePageFirst() {
-        ticketDAOStore.setBookingStore(new BookingStoreImpl());
-
         ticketDAOStore.bookTicket(444L, 18L, 23, Ticket.Category.BAR);
         ticketDAOStore.bookTicket(444L, 23L, 23, Ticket.Category.PREMIUM);
         ticketDAOStore.bookTicket(444L, 15L, 23, Ticket.Category.STANDARD);
@@ -165,13 +147,11 @@ public class TicketDAOStoreTest {
         assertEquals(ticketDAOStore.getBookedTickets(new UserBean() {{
             setId(555L);
         }}, 3, 1)
-                             .size(), 3);
+                .size(), 3);
     }
 
     @Test
     public void shouldGetBookedTicketByUserZeroElement_whenPageSizeThreePageSecond() {
-        ticketDAOStore.setBookingStore(new BookingStoreImpl());
-
         ticketDAOStore.bookTicket(444L, 18L, 23, Ticket.Category.BAR);
         ticketDAOStore.bookTicket(444L, 23L, 23, Ticket.Category.PREMIUM);
         ticketDAOStore.bookTicket(444L, 15L, 23, Ticket.Category.STANDARD);
@@ -187,8 +167,6 @@ public class TicketDAOStoreTest {
 
     @Test
     public void shouldGetBookedTicketByUserOneElement_whenPageSizeTwoPageSecond() {
-        ticketDAOStore.setBookingStore(new BookingStoreImpl());
-
         ticketDAOStore.bookTicket(444L, 18L, 23, Ticket.Category.BAR);
         ticketDAOStore.bookTicket(444L, 23L, 23, Ticket.Category.PREMIUM);
         ticketDAOStore.bookTicket(444L, 15L, 23, Ticket.Category.STANDARD);
@@ -200,14 +178,12 @@ public class TicketDAOStoreTest {
         assertEquals(ticketDAOStore.getBookedTickets(new UserBean() {{
             setId(555L);
         }}, 2, 2)
-                             .size(), 1);
+                .size(), 1);
     }
 
 
     @Test
     public void shouldGetBookedTicketByEventThreeElement_whenPageSizeThreePageFirst() {
-        ticketDAOStore.setBookingStore(new BookingStoreImpl());
-
         ticketDAOStore.bookTicket(444L, 21L, 23, Ticket.Category.BAR);
         ticketDAOStore.bookTicket(444L, 21L, 23, Ticket.Category.PREMIUM);
         ticketDAOStore.bookTicket(444L, 21L, 23, Ticket.Category.STANDARD);
@@ -223,8 +199,6 @@ public class TicketDAOStoreTest {
 
     @Test
     public void shouldGetBookedTicketByEventZeroElement_whenPageSizeThreePageSecond() {
-        ticketDAOStore.setBookingStore(new BookingStoreImpl());
-
         ticketDAOStore.bookTicket(444L, 18L, 23, Ticket.Category.BAR);
         ticketDAOStore.bookTicket(444L, 23L, 23, Ticket.Category.PREMIUM);
         ticketDAOStore.bookTicket(444L, 15L, 23, Ticket.Category.STANDARD);
@@ -240,7 +214,7 @@ public class TicketDAOStoreTest {
 
     @Test
     public void shouldGetBookedTicketByEventOneElement_whenPageSizeTwoPageSecond() {
-        ticketDAOStore.setBookingStore(new BookingStoreImpl());
+
 
         ticketDAOStore.bookTicket(444L, 18L, 23, Ticket.Category.BAR);
         ticketDAOStore.bookTicket(444L, 23L, 23, Ticket.Category.PREMIUM);

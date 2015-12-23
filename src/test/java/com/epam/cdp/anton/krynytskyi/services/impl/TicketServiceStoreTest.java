@@ -1,35 +1,28 @@
 package com.epam.cdp.anton.krynytskyi.services.impl;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-
 import com.epam.cdp.anton.krynytskyi.model.Ticket;
-import com.epam.cdp.anton.krynytskyi.dao.store.TicketDAOStore;
 import com.epam.cdp.anton.krynytskyi.model.impl.EventBean;
 import com.epam.cdp.anton.krynytskyi.model.impl.TicketBean;
 import com.epam.cdp.anton.krynytskyi.model.impl.UserBean;
-import com.epam.cdp.anton.krynytskyi.services.impl.TicketServiceStore;
-import com.epam.cdp.anton.krynytskyi.store.impl.BookingStoreImpl;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TicketServiceStoreTest {
 
-    @InjectMocks
-    private TicketDAOStore ticketDAOStore;
-
-    @InjectMocks
     private TicketServiceStore ticketServiceStore;
 
     @Before
     public void initialize() {
-        ticketDAOStore.setBookingStore(new BookingStoreImpl());
-        ticketServiceStore.setTicketDAO(ticketDAOStore);
+        ApplicationContext context = new ClassPathXmlApplicationContext("spring-beans.xml");
+        ticketServiceStore = context.getBean(TicketServiceStore.class);
     }
 
     @Test
@@ -154,7 +147,7 @@ public class TicketServiceStoreTest {
         assertEquals(ticketServiceStore.getBookedTickets(new UserBean() {{
             setId(555L);
         }}, 3, 1)
-                             .size(), 3);
+                .size(), 3);
     }
 
     @Test
@@ -187,7 +180,7 @@ public class TicketServiceStoreTest {
         assertEquals(ticketServiceStore.getBookedTickets(new UserBean() {{
             setId(555L);
         }}, 2, 2)
-                             .size(), 1);
+                .size(), 1);
     }
 
 

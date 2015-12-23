@@ -1,23 +1,21 @@
 package com.epam.cdp.anton.krynytskyi.dao.store;
 
-import static com.epam.cdp.anton.krynytskyi.model.Const.USER_BEAN;
-import static java.util.Objects.nonNull;
-
 import com.epam.cdp.anton.krynytskyi.dao.UserDAO;
 import com.epam.cdp.anton.krynytskyi.model.User;
 import com.epam.cdp.anton.krynytskyi.store.BookingStore;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.epam.cdp.anton.krynytskyi.model.Const.USER_BEAN;
+import static java.util.Objects.nonNull;
+
 public class UserDAOStore implements UserDAO {
 
+    @Autowired
     private BookingStore bookingStore;
-
-    public void setBookingStore(BookingStore bookingStore) {
-        this.bookingStore = bookingStore;
-    }
 
     public List<User> selectAll() {
         List<Object> objectList = bookingStore.readAll(USER_BEAN);

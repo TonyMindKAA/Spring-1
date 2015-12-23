@@ -139,4 +139,10 @@ public interface BookingFacade {
      */
     boolean cancelTicket(long ticketId);
 
+    boolean putMoneyIntoAccount(long userAccountId, long amountOfMoney);
+
+    boolean withdrawMoneyFromAccount(long userAccountId, long amountOfMoney);
+
+
+
 }

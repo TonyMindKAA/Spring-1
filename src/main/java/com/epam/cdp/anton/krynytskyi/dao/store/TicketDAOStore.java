@@ -1,26 +1,24 @@
 package com.epam.cdp.anton.krynytskyi.dao.store;
 
-import static com.epam.cdp.anton.krynytskyi.model.Const.TICKET_BEAN;
-import static java.util.Objects.nonNull;
-
 import com.epam.cdp.anton.krynytskyi.dao.TicketDAO;
 import com.epam.cdp.anton.krynytskyi.model.Event;
 import com.epam.cdp.anton.krynytskyi.model.Ticket;
 import com.epam.cdp.anton.krynytskyi.model.User;
-import com.epam.cdp.anton.krynytskyi.store.BookingStore;
 import com.epam.cdp.anton.krynytskyi.model.impl.TicketBean;
+import com.epam.cdp.anton.krynytskyi.store.BookingStore;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.epam.cdp.anton.krynytskyi.model.Const.TICKET_BEAN;
+import static java.util.Objects.nonNull;
+
 public class TicketDAOStore implements TicketDAO {
 
+    @Autowired
     private BookingStore bookingStore;
-
-    public void setBookingStore(BookingStore bookingStore) {
-        this.bookingStore = bookingStore;
-    }
 
     public List<Ticket> selectAll() {
         List<Object> objectList = bookingStore.readAll(TICKET_BEAN);

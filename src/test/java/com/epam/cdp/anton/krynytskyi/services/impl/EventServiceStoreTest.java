@@ -14,6 +14,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.Date;
 
@@ -21,16 +23,12 @@ import java.util.Date;
 @RunWith(MockitoJUnitRunner.class)
 public class EventServiceStoreTest {
 
-    @InjectMocks
-    private EventDAOStore eventDAOStore;
-
-    @InjectMocks
     private EventServiceStore eventServiceStore;
 
     @Before
     public void initialize() {
-        eventDAOStore.setBookingStore(new BookingStoreImpl());
-        eventServiceStore.setEventDAO(eventDAOStore);
+        ApplicationContext context = new ClassPathXmlApplicationContext("spring-beans.xml");
+        eventServiceStore = context.getBean(EventServiceStore.class);
     }
 
     @Test

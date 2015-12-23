@@ -3,16 +3,14 @@ package com.epam.cdp.anton.krynytskyi.services.impl;
 import com.epam.cdp.anton.krynytskyi.dao.UserDAO;
 import com.epam.cdp.anton.krynytskyi.model.User;
 import com.epam.cdp.anton.krynytskyi.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 public class UserServiceStore implements UserService {
 
+    @Autowired
     private UserDAO userDAO;
-
-    public void setUserDAO(UserDAO userDAO) {
-        this.userDAO = userDAO;
-    }
 
     public List<User> selectAll() {
         return userDAO.selectAll();

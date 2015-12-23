@@ -24,13 +24,13 @@ public class FacadeInitProcessor implements BeanPostProcessor {
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName)
             throws BeansException {
-        if (beanName.equals("bookingFacadeImpl")) {
+    /*    if (beanName.equals("bookingFacadeImpl")) {
             BookingFacadeImpl bookingFacade = (BookingFacadeImpl)bean;
             BookingJSonIO bookingJSonIO = new BookingJSonIO();
             BookingJSonObj obj = bookingJSonIO.read(new File("store.txt"));
 
             setValueToStore(bookingFacade, obj);
-        }
+        }*/
         return bean;
     }
 

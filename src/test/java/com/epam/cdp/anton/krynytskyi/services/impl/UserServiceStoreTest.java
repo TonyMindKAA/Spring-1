@@ -15,25 +15,24 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceStoreTest {
 
-    @InjectMocks
-    private UserDAOStore userDAOStore;
-    @InjectMocks
     private UserServiceStore userServiceStore;
 
     @Before
     public void initialize() {
-        userDAOStore.setBookingStore(new BookingStoreImpl());
-        userServiceStore.setUserDAO(userDAOStore);
+        ApplicationContext context = new ClassPathXmlApplicationContext("spring-beans.xml");
+        userServiceStore = context.getBean(UserServiceStore.class);
     }
 
     @Test
     public void shoutReturnEmptyListOfEvents_whenInvokeSelectAll() {
 
-        assertThat(userDAOStore.selectAll().isEmpty()).isTrue();
+        assertThat(userServiceStore.selectAll().isEmpty()).isTrue();
     }
 
     @Test

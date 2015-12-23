@@ -7,6 +7,7 @@ import com.epam.cdp.anton.krynytskyi.model.User;
 import com.epam.cdp.anton.krynytskyi.services.EventService;
 import com.epam.cdp.anton.krynytskyi.services.TicketService;
 import com.epam.cdp.anton.krynytskyi.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 import java.util.List;
@@ -17,6 +18,7 @@ public class BookingFacadeImpl implements BookingFacade {
     private TicketService ticketService;
     private UserService userService;
 
+    @Autowired
     public BookingFacadeImpl(EventService eventService,
                              TicketService ticketService,
                              UserService userService) {

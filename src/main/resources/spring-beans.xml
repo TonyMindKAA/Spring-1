@@ -1,40 +1,31 @@
 <beans
-		xmlns="http://www.springframework.org/schema/beans"
-	    xmlns:p="http://www.springframework.org/schema/p"
-		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xsi:schemaLocation="
-			http://www.springframework.org/schema/beans
-			http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:p="http://www.springframework.org/schema/p"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-	<!-- In memory store -->
-	<bean id="bookingStoreImpl" name="bookingStore" class="com.epam.cdp.anton.krynytskyi.store.impl.BookingStoreImpl" />
+    <context:annotation-config/>
 
-	<!-- In memory store dao -->
-	<bean id="abstractStore" abstract="true" >
-		<property name="bookingStore" ref="bookingStore"/>
-	</bean>
+    <!-- In memory store -->
+    <bean id="bookingStoreImpl" name="bookingStore" class="com.epam.cdp.anton.krynytskyi.store.impl.BookingStoreImpl"/>
 
-	<bean id="eventDAOStore" class="com.epam.cdp.anton.krynytskyi.dao.store.EventDAOStore" parent="abstractStore" />
-	<bean id="ticketDAOStore" class="com.epam.cdp.anton.krynytskyi.dao.store.TicketDAOStore" parent="abstractStore" />
-	<bean id="userDAOStore" class="com.epam.cdp.anton.krynytskyi.dao.store.UserDAOStore" parent="abstractStore" />
+    <!-- In memory store dao-->
+    <bean id="eventDAOStore" class="com.epam.cdp.anton.krynytskyi.dao.store.EventDAOStore"/>
+    <bean id="ticketDAOStore" class="com.epam.cdp.anton.krynytskyi.dao.store.TicketDAOStore"/>
+    <bean id="userDAOStore" class="com.epam.cdp.anton.krynytskyi.dao.store.UserDAOStore"/>
 
-	<!-- In memory store services-->
-	<bean id="eventServiceStore" class="com.epam.cdp.anton.krynytskyi.services.impl.EventServiceStore"
-		p:eventDAO-ref="eventDAOStore" />
+    <!-- In memory store services-->
+    <bean id="eventServiceStore" class="com.epam.cdp.anton.krynytskyi.services.impl.EventServiceStore"/>
+    <bean id="ticketServiceStore" class="com.epam.cdp.anton.krynytskyi.services.impl.TicketServiceStore"/>
+    <bean id="userServiceStore" class="com.epam.cdp.anton.krynytskyi.services.impl.UserServiceStore"/>
 
-	<bean id="ticketServiceStore" class="com.epam.cdp.anton.krynytskyi.services.impl.TicketServiceStore"
-		p:ticketDAO-ref = "ticketDAOStore"/>
+    <!-- In memory store facade-->
+    <bean id="bookingFacadeImpl" class="com.epam.cdp.anton.krynytskyi.facade.impl.BookingFacadeImpl"/>
 
-	<bean id="userServiceStore" class="com.epam.cdp.anton.krynytskyi.services.impl.UserServiceStore"
-		p:userDAO-ref = "userDAOStore" />
-
-	<!-- In memory store facade-->
-	<bean id="bookingFacadeImpl" class="com.epam.cdp.anton.krynytskyi.facade.impl.BookingFacadeImpl">
-		<constructor-arg type="com.epam.cdp.anton.krynytskyi.services.EventService" ref="eventServiceStore" />
-		<constructor-arg type="com.epam.cdp.anton.krynytskyi.services.TicketService" ref="ticketServiceStore" />
-		<constructor-arg type="com.epam.cdp.anton.krynytskyi.services.UserService" ref="userServiceStore" />
-	</bean>
-
-	<bean class="com.epam.cdp.anton.krynytskyi.model.post.processor.FacadeInitProcessor" />
+    <bean class="com.epam.cdp.anton.krynytskyi.model.post.processor.FacadeInitProcessor"/>
 
 </beans>

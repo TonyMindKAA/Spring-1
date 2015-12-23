@@ -4,7 +4,7 @@ package com.epam.cdp.anton.krynytskyi.model;
  * Created by maksym_govorischev.
  */
 public interface Ticket {
-    public enum Category {STANDARD, PREMIUM, BAR}
+        public enum Category {STANDARD, PREMIUM, BAR}
 
     /**
      * Ticket Id. UNIQUE.

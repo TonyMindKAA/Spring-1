@@ -1,11 +1,9 @@
 package com.epam.cdp.anton.krynytskyi.dao.store;
 
-import static com.epam.cdp.anton.krynytskyi.model.Const.EVENT_BEAN;
-import static java.util.Objects.nonNull;
-
 import com.epam.cdp.anton.krynytskyi.dao.EventDAO;
 import com.epam.cdp.anton.krynytskyi.model.Event;
 import com.epam.cdp.anton.krynytskyi.store.BookingStore;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,13 +11,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.epam.cdp.anton.krynytskyi.model.Const.EVENT_BEAN;
+import static java.util.Objects.nonNull;
+
 public class EventDAOStore implements EventDAO {
 
+    @Autowired
     private BookingStore bookingStore;
-
-    public void setBookingStore(BookingStore bookingStore) {
-        this.bookingStore = bookingStore;
-    }
 
     public List<Event> selectAll() {
         List<Object> objectList = bookingStore.readAll(EVENT_BEAN);
@@ -52,7 +50,7 @@ public class EventDAOStore implements EventDAO {
     }
 
     public boolean delete(Event event) {
-        return nonNull(event)? deleteById(event.getId()) : false;
+        return nonNull(event) ? deleteById(event.getId()) : false;
     }
 
     public boolean deleteById(long id) {

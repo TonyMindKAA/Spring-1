@@ -5,16 +5,14 @@ import com.epam.cdp.anton.krynytskyi.model.Event;
 import com.epam.cdp.anton.krynytskyi.model.Ticket;
 import com.epam.cdp.anton.krynytskyi.model.User;
 import com.epam.cdp.anton.krynytskyi.services.TicketService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 public class TicketServiceStore implements TicketService {
 
+    @Autowired
     private TicketDAO ticketDAO;
-
-    public void setTicketDAO(TicketDAO ticketDAO) {
-        this.ticketDAO = ticketDAO;
-    }
 
     public List<Ticket> selectAll() {
         return ticketDAO.selectAll();

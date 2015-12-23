@@ -3,17 +3,14 @@ package com.epam.cdp.anton.krynytskyi.services.impl;
 import com.epam.cdp.anton.krynytskyi.dao.EventDAO;
 import com.epam.cdp.anton.krynytskyi.model.Event;
 import com.epam.cdp.anton.krynytskyi.services.EventService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 import java.util.List;
 
 public class EventServiceStore implements EventService {
-
+    @Autowired
     private EventDAO eventDAO;
-
-    public void setEventDAO(EventDAO eventDAO) {
-        this.eventDAO = eventDAO;
-    }
 
     public List<Event> selectAll() {
         return eventDAO.selectAll();
