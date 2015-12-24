@@ -93,6 +93,16 @@ public class BookingFacadeImpl implements BookingFacade {
         return ticketService.deleteById(ticketId);
     }
 
+    @Override
+    public boolean putMoneyIntoAccount(long userAccountId, long amountOfMoney) {
+        return false;
+    }
+
+    @Override
+    public boolean withdrawMoneyFromAccount(long userAccountId, long amountOfMoney) {
+        return false;
+    }
+
     public int size(){
         int size = eventService.selectAll().size() +
                    userService.selectAll().size() +
