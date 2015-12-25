@@ -4,12 +4,14 @@ import com.epam.cdp.anton.krynytskyi.dao.EventDAO;
 import com.epam.cdp.anton.krynytskyi.model.Event;
 import com.epam.cdp.anton.krynytskyi.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.Date;
 import java.util.List;
 
 public class EventServiceStore implements EventService {
     @Autowired
+    @Qualifier("eventDAOStore")
     private EventDAO eventDAO;
 
     public List<Event> selectAll() {

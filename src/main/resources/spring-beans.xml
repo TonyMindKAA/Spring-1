@@ -26,7 +26,11 @@
     <bean id="ticketDAOStore" class="com.epam.cdp.anton.krynytskyi.dao.store.TicketDAOStore"/>
     <bean id="userDAOStore" class="com.epam.cdp.anton.krynytskyi.dao.store.UserDAOStore"/>
 
+    <!-- mysql dao-->
     <bean id="userDAOMySql" class="com.epam.cdp.anton.krynytskyi.dao.mysql.UserDAOMySql"/>
+    <bean id="eventDAOMySql" class="com.epam.cdp.anton.krynytskyi.dao.mysql.EventDAOMySql"/>
+    <bean id="ticketDAOMySql" class="com.epam.cdp.anton.krynytskyi.dao.mysql.TicketDAOMySql"/>
+    <bean id="userAccountDAOMySql" class="com.epam.cdp.anton.krynytskyi.dao.mysql.UserAccountDAOMySql"/>
 
     <!-- In memory store services-->
     <bean id="eventServiceStore" class="com.epam.cdp.anton.krynytskyi.services.impl.EventServiceStore"/>

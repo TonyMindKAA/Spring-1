@@ -1,23 +1,17 @@
 package com.epam.cdp.anton.krynytskyi.model;
 
+public interface UserAccount {
 
-public class UserAccount {
-    private long id;
-    private long prepaidMoney;
+    long getUserId();
 
-    public long getId() {
-        return id;
-    }
+    void setUserId(long userId);
 
-    public void setId(long id) {
-        this.id = id;
-    }
+    long getId();
 
-    public long getPrepaidMoney() {
-        return prepaidMoney;
-    }
+    void setId(long id);
 
-    public void setPrepaidMoney(long prepaidMoney) {
-        this.prepaidMoney = prepaidMoney;
-    }
+    long getPrepaidMoney();
+
+    void setPrepaidMoney(long prepaidMoney);
+
 }

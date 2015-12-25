@@ -3,6 +3,7 @@ package com.epam.cdp.anton.krynytskyi.mapers;
 import com.epam.cdp.anton.krynytskyi.model.Event;
 import com.epam.cdp.anton.krynytskyi.model.impl.EventBean;
 
+import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -13,6 +14,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class EventRowMapper implements RowMapper<Event> {
+
+    private static Logger LOG = Logger.getLogger("EventRowMapper");
 
     public Event mapRow(ResultSet rs, int rowNum) throws SQLException {
         Event event = new EventBean();
@@ -28,7 +31,7 @@ public class EventRowMapper implements RowMapper<Event> {
         try {
             return dateFormat.parse(stringDate);
         } catch (ParseException e) {
-            e.printStackTrace();
+            LOG.error("Cann't parse date from string!",e);
         }
         return null;
     }
