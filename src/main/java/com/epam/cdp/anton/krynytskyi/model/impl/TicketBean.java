@@ -53,4 +53,20 @@ public class TicketBean extends AbstractBean implements Ticket {
     public void setPlace(int place) {
         this.place = place;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TicketBean that = (TicketBean) o;
+
+        return id == that.id;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
+    }
 }

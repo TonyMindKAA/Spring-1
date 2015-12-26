@@ -1,10 +1,10 @@
-package com.epam.cdp.anton.krynytskyi.dao;
+package com.epam.cdp.anton.krynytskyi.services;
 
 import com.epam.cdp.anton.krynytskyi.model.UserAccount;
 
 import java.util.List;
 
-public interface UserAccountDAO {
+public interface UserAccountService {
 
     List<UserAccount> selectAll();
 
@@ -18,5 +18,4 @@ public interface UserAccountDAO {
 
     boolean deleteById(long id);
 
-    UserAccount selectByUserId(long userId);
 }

@@ -1,7 +1,6 @@
 package com.epam.cdp.anton.krynytskyi.model.post.processor;
 
-import com.epam.cdp.anton.krynytskyi.facade.impl.BookingFacadeImpl;
-import com.epam.cdp.anton.krynytskyi.io.BookingJSonIO;
+import com.epam.cdp.anton.krynytskyi.facade.impl.store.BookingFacadeStore;
 import com.epam.cdp.anton.krynytskyi.model.BookingJSonObj;
 import com.epam.cdp.anton.krynytskyi.model.impl.EventBean;
 import com.epam.cdp.anton.krynytskyi.model.impl.TicketBean;
@@ -10,7 +9,6 @@ import com.epam.cdp.anton.krynytskyi.model.impl.UserBean;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
-import java.io.File;
 import java.util.List;
 
 public class FacadeInitProcessor implements BeanPostProcessor {
@@ -25,7 +23,7 @@ public class FacadeInitProcessor implements BeanPostProcessor {
     public Object postProcessAfterInitialization(Object bean, String beanName)
             throws BeansException {
     /*    if (beanName.equals("bookingFacadeImpl")) {
-            BookingFacadeImpl bookingFacade = (BookingFacadeImpl)bean;
+            BookingFacadeStore bookingFacade = (BookingFacadeStore)bean;
             BookingJSonIO bookingJSonIO = new BookingJSonIO();
             BookingJSonObj obj = bookingJSonIO.read(new File("store.txt"));
 
@@ -34,7 +32,7 @@ public class FacadeInitProcessor implements BeanPostProcessor {
         return bean;
     }
 
-    private void setValueToStore(BookingFacadeImpl bookingFacade, BookingJSonObj obj) {
+    private void setValueToStore(BookingFacadeStore bookingFacade, BookingJSonObj obj) {
         List<EventBean> events = obj.getEvents();
         events.stream().forEach(val -> bookingFacade.createEvent(val));
 
