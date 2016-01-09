@@ -14,4 +14,8 @@ public interface UserAccount {
 
     void setPrepaidMoney(long prepaidMoney);
 
+    long addMoneyToAccount (long money);
+
+    long writeOffMoneyToAccount (long money);
+
 }

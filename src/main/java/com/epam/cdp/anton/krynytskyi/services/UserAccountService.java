@@ -18,4 +18,8 @@ public interface UserAccountService {
 
     boolean deleteById(long id);
 
+    boolean putMoneyIntoAccount(long userAccountId, long amountOfMoney);
+
+    boolean withdrawMoneyFromAccount(long userAccountId, long amountOfMoney);
+
 }

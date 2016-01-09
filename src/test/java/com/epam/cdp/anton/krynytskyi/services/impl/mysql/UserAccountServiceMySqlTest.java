@@ -35,7 +35,7 @@ public class UserAccountServiceMySqlTest {
     }
 
     @Test
-    public void shouldInsertTicket_whenInvokeInsert() {
+    public void shouldInsertUser_whenInvokeInsert() {
         UserAccount userAccount = new UserAccountBean() {{
             setUserId(123413L);
             setPrepaidMoney(234222L);
@@ -47,7 +47,7 @@ public class UserAccountServiceMySqlTest {
     }
 
     @Test
-    public void shouldUpdateTicket_whenInvokeUpdate() {
+    public void shouldUpdateUser_whenInvokeUpdate() {
         UserAccount userAccount = new UserAccountBean();
         userAccount.setUserId(123413L);
         userAccount.setPrepaidMoney(234222L);
@@ -60,7 +60,7 @@ public class UserAccountServiceMySqlTest {
 
 
     @Test
-    public void shouldReturnTicketById_whenInvokeSelectById() {
+    public void shouldReturnUserById_whenInvokeSelectById() {
         UserAccount userAccount = new UserAccountBean() {{
             setId(12343L);
         }};
@@ -77,6 +77,61 @@ public class UserAccountServiceMySqlTest {
         when(userAccountServiceMySql.deleteById(id)).thenReturn(true);
 
         assertThat(userAccountServiceMySql.deleteById(id)).isTrue();
+    }
+
+    @Test
+    public  void shouldPutMoneyIntoAccount_whenMoneyNotNegativeNumber () {
+        long userAccountId = 11234123L;
+        long amountOfMoney = 7000L;
+        UserAccount userAccount = new UserAccountBean();
+        when(userAccountDAOMySql.selectById(userAccountId)).thenReturn(userAccount);
+        userAccount.addMoneyToAccount(amountOfMoney);
+        when(userAccountDAOMySql.update(userAccount)).thenReturn(userAccount);
+
+        assertThat(userAccountServiceMySql.putMoneyIntoAccount(userAccountId,amountOfMoney)).isTrue();
+    }
+
+    @Test
+    public  void shouldNotPutMoneyIntoAccount_whenMoneyNegativeNumber () {
+        long userAccountId = 11234123L;
+        long amountOfMoney = - 7000L;
+
+        assertThat(userAccountServiceMySql.putMoneyIntoAccount(userAccountId,amountOfMoney)).isFalse();
+    }
+
+    @Test
+    public  void shouldWithdrawMoneyFromAccount_whenAmountOfMoneyNotNegativeNumberAndEnoughMoney () {
+        long userAccountId = 11234123L;
+        long amountOfMoney = 7000L;
+
+        UserAccount userAccount = new UserAccountBean();
+        userAccount.setPrepaidMoney(10000L);
+
+        when(userAccountDAOMySql.selectById(userAccountId)).thenReturn(userAccount);
+        when(userAccountDAOMySql.update(userAccount)).thenReturn(userAccount);
+
+        assertThat(userAccountServiceMySql.withdrawMoneyFromAccount(userAccountId,amountOfMoney)).isTrue();
+    }
+
+    @Test
+    public  void shouldNotWithdrawMoneyFromAccount_whenAmountOfMoneyNotNegativeNumberAndNotEnoughMoney () {
+        long userAccountId = 11234123L;
+        long amountOfMoney = 7000L;
+
+        UserAccount userAccount = new UserAccountBean();
+        userAccount.setPrepaidMoney(3000L);
+
+        when(userAccountDAOMySql.selectById(userAccountId)).thenReturn(userAccount);
+
+        assertThat(userAccountServiceMySql.withdrawMoneyFromAccount(userAccountId,amountOfMoney)).isFalse();
+    }
+
+    @Test
+    public  void shouldNotWithdrawMoneyFromAccount_whenAmountOfMoneyNegativeNumber () {
+        long userAccountId = 11234123L;
+        long amountOfMoney = -7000L;
+
+        assertThat(userAccountServiceMySql.withdrawMoneyFromAccount(userAccountId,amountOfMoney)).isFalse();
     }
 
 }

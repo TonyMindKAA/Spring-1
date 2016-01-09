@@ -33,6 +33,18 @@ public class UserAccountBean implements UserAccount {
     }
 
     @Override
+    public long addMoneyToAccount(long money) {
+        prepaidMoney += money;
+        return prepaidMoney;
+    }
+
+    @Override
+    public long writeOffMoneyToAccount(long money) {
+        prepaidMoney -= money;
+        return prepaidMoney;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

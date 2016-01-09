@@ -43,4 +43,30 @@ public class UserAccountServiceMySql implements UserAccountService {
     public boolean deleteById(long id) {
         return userAccountDAO.deleteById(id);
     }
+
+    @Override
+    public boolean putMoneyIntoAccount(long userAccountId, long amountOfMoney) {
+        if (amountOfMoney > 0) {
+            UserAccount userAccount = selectById(userAccountId);
+            userAccount.addMoneyToAccount(amountOfMoney);
+            update(userAccount);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean withdrawMoneyFromAccount(long userAccountId, long amountOfMoney) {
+        if (amountOfMoney > 0) {
+            UserAccount userAccount = selectById(userAccountId);
+            if (userAccount.getPrepaidMoney() - amountOfMoney > 0) {
+                userAccount.writeOffMoneyToAccount(amountOfMoney);
+                update(userAccount);
+                return true;
+            }else {
+                return false;
+            }
+        }
+        return false;
+    }
 }
